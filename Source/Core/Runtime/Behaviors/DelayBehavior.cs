@@ -1,10 +1,13 @@
-#if UNITY_5_3_OR_NEWER
+#if UNITY_6000_0_OR_NEWER
 using UnityEngine;
+using UnityEngine.Scripting;
+#elif GODOT
+using Godot;
+#endif
+using Newtonsoft.Json;
 using System.Collections;
 using System.Runtime.Serialization;
 using VRBuilder.Core.Attributes;
-using Newtonsoft.Json;
-using UnityEngine.Scripting;
 
 namespace VRBuilder.Core.Behaviors
 {
@@ -13,7 +16,7 @@ namespace VRBuilder.Core.Behaviors
     /// </summary>
     [DataContract(IsReference = true)]
     [HelpLink("https://www.mindport.co/vr-builder/manual/default-behaviors/delay")]
-    public class DelayBehavior : Behavior<DelayBehavior.EntityData>
+    public partial class DelayBehavior : Behavior<DelayBehavior.EntityData>
     {
         /// <summary>
         /// The data class for a delay behavior.
@@ -29,13 +32,7 @@ namespace VRBuilder.Core.Behaviors
             public Metadata Metadata { get; set; }
 
             [IgnoreDataMember]
-            public string Name
-            {
-                get
-                {
-                    return $"Wait for {DelayTime} seconds";
-                }
-            }
+            public string Name => $"Wait for {DelayTime} seconds";
         }
 
         [JsonConstructor, Preserve]
@@ -47,7 +44,11 @@ namespace VRBuilder.Core.Behaviors
         {
             if (delayTime < 0f)
             {
+#if UNITY_6000_0_OR_NEWER
                 Debug.LogWarningFormat("DelayTime has to be zero or positive, but it was {0}. Setting to 0 instead.", delayTime);
+#elif GODOT
+                GD.PushWarning($"DelayTime has to be zero or positive, but it was {delayTime}. Setting to 0 instead.");
+#endif
                 delayTime = 0f;
             }
 
@@ -68,12 +69,21 @@ namespace VRBuilder.Core.Behaviors
             /// <inheritdoc />
             public override IEnumerator Update()
             {
+#if UNITY_6000_0_OR_NEWER
                 float timeStarted = Time.time;
 
                 while (Time.time - timeStarted < Data.DelayTime)
                 {
                     yield return null;
                 }
+#elif GODOT
+                ulong timeStarted = Time.GetTicksMsec();
+
+                while (Time.GetTicksMsec() - timeStarted < Data.DelayTime)
+                {
+                    yield return null;
+                }
+#endif
             }
 
             /// <inheritdoc />
@@ -94,8 +104,3 @@ namespace VRBuilder.Core.Behaviors
         }
     }
 }
-
-#elif GODOT
-using Godot;
-//TODO
-#endif

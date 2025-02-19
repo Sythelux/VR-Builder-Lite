@@ -3,15 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-#if UNITY_5_3_OR_NEWER
-using UnityEngine.Scripting;
-#elif GODOT
-using Godot;
-#endif
 using VRBuilder.Core.Attributes;
 using VRBuilder.Core.Configuration.Modes;
 using VRBuilder.Core.EntityOwners;
 using VRBuilder.Core.EntityOwners.ParallelEntityCollection;
+#if UNITY_6000_0_OR_NEWER
+using UnityEngine.Scripting;
+#elif GODOT
+#endif
 
 namespace VRBuilder.Core.Behaviors
 {
