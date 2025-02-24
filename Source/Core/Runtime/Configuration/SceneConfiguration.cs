@@ -18,7 +18,7 @@ namespace VRBuilder.Core.Configuration
 #if UNITY_5_3_OR_NEWER
     public class SceneConfiguration : MonoBehaviour, ISceneConfiguration
 #elif GODOT
-    [Tool, GlobalClass]
+    [Tool, GlobalClass, Icon("res://addons/TinkerFlow/TinkerFlow/Core/Resources/TinkerFlow.svg")]
     public partial class SceneConfiguration : Node, ISceneConfiguration
 #endif
     {

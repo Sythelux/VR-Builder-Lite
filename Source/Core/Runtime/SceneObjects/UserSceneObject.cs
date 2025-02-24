@@ -57,6 +57,7 @@ namespace VRBuilder.Core.SceneObjects
     }
     #elif GODOT
 
+    [Tool, GlobalClass, Icon("res://addons/TinkerFlow/TinkerFlow/Core/Resources/TinkerFlow_Color.svg")]
     public partial class UserSceneObject : Node
     {
         [SerializeField]

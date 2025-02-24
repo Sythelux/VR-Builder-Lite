@@ -42,8 +42,8 @@ namespace VRBuilder.Core.SceneObjects
     [ExecuteInEditMode, DisallowMultipleComponent]
     public class ProcessSceneObject : MonoBehaviour, ISerializationCallbackReceiver, ISceneObject
 #elif GODOT
-    [Tool, GlobalClass]
-    public partial class ProcessSceneObject : Node3D, ISceneObject //todo it is Node3D instead of Node, because in Unity it has "visible" check below
+    [Tool, GlobalClass, Icon("res://addons/TinkerFlow/TinkerFlow/Core/Resources/TinkerFlow_Color.svg")]
+    public partial class ProcessSceneObject : Node, ISceneObject //todo it is Node3D instead of Node, because in Unity it has "visible" check below
 #endif
     {
         /// <summary>
@@ -105,7 +105,7 @@ namespace VRBuilder.Core.SceneObjects
 #if UNITY_5_3_OR_NEWER
         public GameObject GameObject => gameObject;
 #elif GODOT
-        public Node GameObject => this;
+        public Node GameObject => GetParent();
 #endif
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace VRBuilder.Core.SceneObjects
 #elif GODOT
             IEnumerable<ProcessSceneObject> processSceneObjects = FindChildren("*", recursive: true).OfType<ProcessSceneObject>();
             foreach (ProcessSceneObject pso in processSceneObjects)
-                if (!pso.Visible)
+                if (!pso.IsProcessing())
                     pso.Init();
 #endif
         }
